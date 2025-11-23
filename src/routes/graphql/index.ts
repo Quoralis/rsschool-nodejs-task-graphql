@@ -2,7 +2,6 @@ import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { createGqlResponseSchema, gqlResponseSchema } from './schemas.js';
 import { graphql, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
 import { schema } from './schema.js';
-import { PrismaClient } from '@prisma/client';
 
 
 
