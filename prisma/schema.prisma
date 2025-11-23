@@ -8,49 +8,45 @@ datasource db {
 }
 
 model User {
-  id      String @id @default(uuid())
-  name    String
-  balance Float
-
-  profile          Profile?
+  id               String                 @id @default(uuid())
+  name             String
+  balance          Float
   posts            Post[]
-  userSubscribedTo SubscribersOnAuthors[] @relation("subscriber")
+  profile          Profile?
   subscribedToUser SubscribersOnAuthors[] @relation("author")
+  userSubscribedTo SubscribersOnAuthors[] @relation("subscriber")
 }
 
 model SubscribersOnAuthors {
-  subscriber   User   @relation("subscriber", fields: [subscriberId], references: [id], onDelete: Cascade)
   subscriberId String
-  author       User   @relation("author", fields: [authorId], references: [id], onDelete: Cascade)
   authorId     String
+  author       User   @relation("author", fields: [authorId], references: [id], onDelete: Cascade)
+  subscriber   User   @relation("subscriber", fields: [subscriberId], references: [id], onDelete: Cascade)
 
   @@id([subscriberId, authorId])
 }
 
 model Profile {
-  id          String  @id @default(uuid())
-  isMale      Boolean
-  yearOfBirth Int
-
-  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String     @id @default(uuid())
+  isMale       Boolean
+  yearOfBirth  Int
   userId       String     @unique
-  memberType   MemberType @relation(fields: [memberTypeId], references: [id], onDelete: Restrict)
   memberTypeId String
+  memberType   MemberType @relation(fields: [memberTypeId], references: [id])
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Post {
-  id      String @id @default(uuid())
-  title   String
-  content String
-
-  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id       String @id @default(uuid())
+  title    String
+  content  String
   authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
 
 model MemberType {
-  id                 String @id
+  id                 String    @id
   discount           Float
   postsLimitPerMonth Int
-
-  profiles Profile[]
+  profiles           Profile[]
 }
